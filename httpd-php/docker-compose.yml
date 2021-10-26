@@ -1,6 +1,9 @@
+# Docker compose version
 version: "3"
 
+# Docker compose services
 services:
+# Run mysql db from image
   db:
      image: mysql:5.7
      volumes:
@@ -13,7 +16,9 @@ services:
        MYSQL_PASSWORD: abc@123
      networks:
        - net-local
-       
+         # ipv4_address: 172.18.1.3 # set static ip
+
+# Run httpd-php from build Dockerfile
   httpd-php:
      depends_on:
        - db
@@ -23,8 +28,11 @@ services:
      restart: always
      networks:
        - net-local
+         # ipv4_address: 172.18.1.2 # set static ip
        - net-pro
-       
+         # ipv4_address: 172.17.1.2 # set static ip
+
+# Run phpmyadmin from image   
   phpmyadmin:
      image: phpmyadmin
      restart: always
@@ -33,19 +41,43 @@ services:
      environment:
        PHA_HOST: db
        MYSQL_ROOT_PASSWORD: abc.123
+     networks:
+       - net-local
+       # ipv4_address: 172.18.1.4 # set static ip
        
+# Run cache redis from image      
   redis:
      image: redis
      networks:
        - net-local
+         # ipv4_address: 172.18.1.5 # set static ip
      port:
        - "6379"
 
+# Create Volumes
 volumes:
   db_data: {}
 
+# Create Netowrks
 networks:
   net-local:
        driver: bridge
+       config:
+         - subnet: 172.18.0.0/16
+           ip_range: 172.18.5.0/24
+           gateway: 172.18.5.254
+           aux_addresses:
+             httpd-php: 172.18.1.2
+             db: 172.18.1.3
+             phpmyadmin: 172.18.1.4
+             redis: 172.18.1.5
+             
   net-pro:
        driver: bridge
+       config:
+         - subnet: 172.17.0.0/16
+           ip_range: 172.17.5.0/24
+           gateway: 172.17.5.254
+           aux_addresses:
+             httpd-php: 172.17.1.2
+
