@@ -4,6 +4,9 @@ services:                                 #Docker compose services
 
   db:                                     #Run mysql db from image
      image: mysql:5.7
+     container_name: mysql-db
+     healthcheck:
+       test: "exit 0"
      volumes:
        - db_data:/var/lib/mysql
      restart: always
@@ -12,71 +15,85 @@ services:                                 #Docker compose services
        MYSQL_DATABASE: wp-db
        MYSQL_USER: wp-user
        MYSQL_PASSWORD: abc@123
+     command: ifconfig
      networks:
-       - net-local
-           ipv4_address: 172.18.0.3    #Set static ip
+       net-local:
+         ipv4_address: 172.18.0.3    #Set static ip
 
   httpd-php:                          #Run httpd-php from build Dockerfile
      depends_on:
-       - db
+       db:
+         condition: service_healthy
      build: .
+       #context: ./dir
+         #dockerfile: Dockerfile-alternate
+         #args:
+           #buildno: 1
+     image: httpd-php:1.0
+     container_name: web-httpd-php
      ports:
        - "8080:80"
      restart: always
+     command: ifconfig
      networks:
-       - net-local
-           ipv4_address: 172.18.0.2    #Set static ip
-       - net-pro
-           ipv4_address: 172.17.0.2    #Set static ip
+       net-local:
+         ipv4_address: 172.18.0.2    #Set static ip
+       net-pro:
+         ipv4_address: 172.17.0.2    #Set static ip
   
   phpmyadmin:                         #Run phpmyadmin from image 
      image: phpmyadmin
+     container_name: phpmyadmin
      restart: always
      ports:
        - "8181:80"
      environment:
        PHA_HOST: db
        MYSQL_ROOT_PASSWORD: abc.123
+     command: ifconfig
      networks:
-       - net-local
-           ipv4_address: 172.18.0.4     #Set static ip
+       net-local:
+         ipv4_address: 172.18.0.4     #Set static ip
        
-   
   redis:                              #Run cache redis from image   
      image: redis
+     container_name: cache-redis
+     command: ifconfig
      networks:
-       - net-local
-           ipv4_address: 172.18.0.5    #Set static ip
+       net-local:
+         ipv4_address: 172.18.0.5    #Set static ip
      ports:
        - "6379"
-
 
 volumes:                               #Create Volumes
   db_data: {}
 
-
 networks:                              #Create Netowrks
   net-local:                           #Specify custom IPAM config
        driver: bridge                  #Custom IPAM driver, instead of the default.
-       #config:                         #A list with zero or more config blocks, each containing any of the following keys:
-         #- subnet: 172.18.0.0/16       #Subnet in CIDR format that represents a network segment
-           #ip_range: 172.18.5.0/24    #Range of IPs from which to allocate container IPs
-           #gateway: 172.18.5.254      # IPv4 or IPv6 gateway for the master subnet
-           #aux_addresses:              # Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
-             #httpd-php: 172.18.0.2
-             #db: 172.18.0.3
-             #phpmyadmin: 172.18.0.4
-             #redis: 172.18.0.5
-       #options:                       #Driver-specific options as a key-value mapping.
-         #foo: bar
-         #baz: "0"     
+       ipam:
+         driver: default
+         config:                         #A list with zero or more config blocks, each containing any of the following keys:
+           - subnet: 172.18.0.0/24       #Subnet in CIDR format that represents a network segment
+             #ip_range: 172.18.5.0/24    #Range of IPs from which to allocate container IPs
+             #gateway: 172.18.0.1      # IPv4 or IPv6 gateway for the master subnet
+             #aux_addresses:              # Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
+               #httpd-php: 172.18.0.2
+               #db: 172.18.0.3
+               #phpmyadmin: 172.18.0.4
+               #redis: 172.18.0.5
+         #options:                       #Driver-specific options as a key-value mapping.
+           #foo: bar
+           #baz: "0"     
          
   net-pro:
        driver: bridge
-       #config:
-         #- subnet: 172.17.0.0/16
-           #ip_range: 172.17.5.0/24
-           #gateway: 172.17.5.254
-           #aux_addresses:
-             #httpd-php: 172.17.0.2
+       ipam:
+         driver: default
+         config:
+           - subnet: 172.17.0.0/24
+             #ip_range: 172.17.5.0/24
+             #gateway: 172.17.0.1
+             #aux_addresses:
+               #httpd-php: 172.17.0.2
 
