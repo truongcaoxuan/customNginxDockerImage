@@ -14,7 +14,7 @@ services:                                 #Docker compose services
        MYSQL_PASSWORD: abc@123
      networks:
        - net-local
-         #ipv4_address: 172.18.0.3    #Set static ip
+           ipv4_address: 172.18.0.3    #Set static ip
 
   httpd-php:                          #Run httpd-php from build Dockerfile
      depends_on:
@@ -25,9 +25,9 @@ services:                                 #Docker compose services
      restart: always
      networks:
        - net-local
-         #ipv4_address: 172.18.0.2    #Set static ip
+           ipv4_address: 172.18.0.2    #Set static ip
        - net-pro
-         #ipv4_address: 172.17.0.2    #Set static ip
+           ipv4_address: 172.17.0.2    #Set static ip
   
   phpmyadmin:                         #Run phpmyadmin from image 
      image: phpmyadmin
@@ -39,14 +39,14 @@ services:                                 #Docker compose services
        MYSQL_ROOT_PASSWORD: abc.123
      networks:
        - net-local
-       # ipv4_address: 172.18.0.4     #Set static ip
+           ipv4_address: 172.18.0.4     #Set static ip
        
    
   redis:                              #Run cache redis from image   
      image: redis
      networks:
        - net-local
-         #ipv4_address: 172.18.0.5    #Set static ip
+           ipv4_address: 172.18.0.5    #Set static ip
      ports:
        - "6379"
 
