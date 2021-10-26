@@ -7,9 +7,9 @@ RUN yum install -y update \
     yum clean all \
     yum install -y wget curl
 
-RUN yum install -y httpd \
-    yum install -y --enablerepo=remi-php74 php-xml php-soap php-xmlrpc \
-                   php-mbstring php-json php-gd php-mcrypt php-mysql 
+RUN yum install -y httpd --enablerepo=remi-php74 \
+    php-xml php-soap php-xmlrpc \
+    php-mbstring php-json php-gd php-mcrypt php-mysql 
 
 WORKDIR /var/www/html
 
