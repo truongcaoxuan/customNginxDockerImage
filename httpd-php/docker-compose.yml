@@ -15,7 +15,7 @@ services:                                 #Docker compose services
        MYSQL_DATABASE: wp-db
        MYSQL_USER: wp-user
        MYSQL_PASSWORD: abc@123
-     command: ifconfig
+     #command: ifconfig
      networks:
        net-local:
          ipv4_address: 172.18.0.3    #Set static ip
@@ -50,7 +50,7 @@ services:                                 #Docker compose services
      environment:
        PHA_HOST: db
        MYSQL_ROOT_PASSWORD: abc.123
-     command: ifconfig
+     #command: ifconfig
      networks:
        net-local:
          ipv4_address: 172.18.0.4      #Set static ip
@@ -58,7 +58,7 @@ services:                                 #Docker compose services
   redis:                               #Run cache redis from image   
      container_name: cache-redis
      image: redis
-     command: ifconfig
+     #command: ifconfig
      networks:
        net-local:
          ipv4_address: 172.18.0.5      #Set static ip
