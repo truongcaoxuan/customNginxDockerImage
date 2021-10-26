@@ -1,4 +1,4 @@
-version: '3'                              #Docker compose version
+version: '3.8'                              #Docker compose version
          
 services:                                 #Docker compose services
 
@@ -15,7 +15,7 @@ services:                                 #Docker compose services
        MYSQL_DATABASE: wp-db
        MYSQL_USER: wp-user
        MYSQL_PASSWORD: abc@123
-     #command: ifconfig
+     command: ifconfig
      networks:
        net-local:
          ipv4_address: 172.18.0.3    #Set static ip
@@ -34,7 +34,7 @@ services:                                 #Docker compose services
      ports:
        - "8080:80"
      restart: always
-     #command: ifconfig
+     command: ifconfig
      networks:
        net-local:
          ipv4_address: 172.18.0.2    #Set static ip
@@ -50,18 +50,18 @@ services:                                 #Docker compose services
      environment:
        PHA_HOST: db
        MYSQL_ROOT_PASSWORD: abc.123
-     #command: ifconfig
+     command: ifconfig
      networks:
        net-local:
-         ipv4_address: 172.18.0.4     #Set static ip
+         ipv4_address: 172.18.0.4      #Set static ip
        
-  redis:                              #Run cache redis from image   
+  redis:                               #Run cache redis from image   
      container_name: cache-redis
      image: redis
-     #command: ifconfig
+     command: ifconfig
      networks:
        net-local:
-         ipv4_address: 172.18.0.5    #Set static ip
+         ipv4_address: 172.18.0.5      #Set static ip
      ports:
        - "6379"
 
@@ -69,14 +69,16 @@ volumes:                               #Create Volumes
   db_data: {}
 
 networks:                              #Create Netowrks
-  net-local:                           #Specify custom IPAM config
-    driver: bridge                  #Custom IPAM driver, instead of the default.
-    ipam:
+  net-local:                           
+    driver: bridge                  
+    enable_ipv6: true
+    ipam:                             #Specify custom IPAM config
+      driver: default                 #Custom IPAM driver, instead of the default.
       config:                         #A list with zero or more config blocks, each containing any of the following keys:
         - subnet: 172.18.0.0/24       #Subnet in CIDR format that represents a network segment
           #ip_range: 172.18.5.0/24    #Range of IPs from which to allocate container IPs
-          #gateway: 172.18.0.1      # IPv4 or IPv6 gateway for the master subnet
-          #aux_addresses:              # Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
+          #gateway: 172.18.0.1        #IPv4 or IPv6 gateway for the master subnet
+          #aux_addresses:             #Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
             #httpd-php: 172.18.0.2
             #db: 172.18.0.3
             #phpmyadmin: 172.18.0.4
@@ -87,7 +89,9 @@ networks:                              #Create Netowrks
          
   net-pro:
     driver: bridge
+    enable_ipv6: true
     ipam:
+      driver: default
       config:
         - subnet: 172.19.0.0/24
           #ip_range: 172.19.5.0/24
