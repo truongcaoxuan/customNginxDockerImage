@@ -39,7 +39,7 @@ services:                                 #Docker compose services
        net-local:
          ipv4_address: 172.18.0.2    #Set static ip
        net-pro:
-         ipv4_address: 172.17.0.2    #Set static ip
+         ipv4_address: 172.19.0.2    #Set static ip
   
   phpmyadmin:                         #Run phpmyadmin from image 
      container_name: phpmyadmin
@@ -89,8 +89,8 @@ networks:                              #Create Netowrks
     driver: bridge
     ipam:
       config:
-        - subnet: 172.17.0.0/24
-          #ip_range: 172.17.5.0/24
-          #gateway: 172.17.0.1
+        - subnet: 172.19.0.0/24
+          #ip_range: 172.19.5.0/24
+          #gateway: 172.19.0.1
           #aux_addresses:
-            #httpd-php: 172.17.0.2
+            #httpd-php: 172.19.0.2
