@@ -13,7 +13,8 @@ services:
        MYSQL_PASSWORD: abc@123
      networks:
        - net-local
-  http-php:
+       
+  httpd-php:
      depends_on:
        - db
      build: .
@@ -23,6 +24,7 @@ services:
      networks:
        - net-local
        - net-pro
+       
   phpmyadmin:
      image: phpmyadmin
      restart: always
@@ -31,6 +33,7 @@ services:
      environment:
        PHA_HOST: db
        MYSQL_ROOT_PASSWORD: abc.123
+       
   redis:
      image: redis
      networks:
