@@ -34,7 +34,7 @@ services:                                 #Docker compose services
      ports:
        - "8080:80"
      restart: always
-     command: ifconfig
+     #command: ifconfig
      networks:
        net-local:
          ipv4_address: 172.18.0.2    #Set static ip
@@ -71,7 +71,7 @@ volumes:                               #Create Volumes
 networks:                              #Create Netowrks
   net-local:                           
     driver: bridge                  
-    enable_ipv6: true
+    #enable_ipv6: true
     ipam:                             #Specify custom IPAM config
       driver: default                 #Custom IPAM driver, instead of the default.
       config:                         #A list with zero or more config blocks, each containing any of the following keys:
@@ -89,7 +89,7 @@ networks:                              #Create Netowrks
          
   net-pro:
     driver: bridge
-    enable_ipv6: true
+    #enable_ipv6: true
     ipam:
       driver: default
       config:
