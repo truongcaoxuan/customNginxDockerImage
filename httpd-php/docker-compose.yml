@@ -5,7 +5,7 @@ services:                                 #Docker compose services
   db:                                     #Run mysql db from image
      image: mysql:5.7
      volumes:
-       - db_data: /var/lib/mysql
+       - db_data:/var/lib/mysql
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: abc.123
@@ -32,7 +32,7 @@ services:                                 #Docker compose services
   phpmyadmin:                         #Run phpmyadmin from image 
      image: phpmyadmin
      restart: always
-     port:
+     ports:
        - "8181:80"
      environment:
        PHA_HOST: db
@@ -47,7 +47,7 @@ services:                                 #Docker compose services
      networks:
        - net-local
          #ipv4_address: 172.18.0.5    #Set static ip
-     port:
+     ports:
        - "6379"
 
 
@@ -58,25 +58,25 @@ volumes:                               #Create Volumes
 networks:                              #Create Netowrks
   net-local:                           #Specify custom IPAM config
        driver: bridge                  #Custom IPAM driver, instead of the default.
-       config:                         #A list with zero or more config blocks, each containing any of the following keys:
-         - subnet: 172.18.0.0/16       #Subnet in CIDR format that represents a network segment
+       #config:                         #A list with zero or more config blocks, each containing any of the following keys:
+         #- subnet: 172.18.0.0/16       #Subnet in CIDR format that represents a network segment
            #ip_range: 172.18.5.0/24    #Range of IPs from which to allocate container IPs
            #gateway: 172.18.5.254      # IPv4 or IPv6 gateway for the master subnet
-           aux_addresses:              # Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
-             httpd-php: 172.18.0.2
-             db: 172.18.0.3
-             phpmyadmin: 172.18.0.4
-             redis: 172.18.0.5
+           #aux_addresses:              # Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
+             #httpd-php: 172.18.0.2
+             #db: 172.18.0.3
+             #phpmyadmin: 172.18.0.4
+             #redis: 172.18.0.5
        #options:                       #Driver-specific options as a key-value mapping.
          #foo: bar
          #baz: "0"     
          
   net-pro:
        driver: bridge
-       config:
-         - subnet: 172.17.0.0/16
+       #config:
+         #- subnet: 172.17.0.0/16
            #ip_range: 172.17.5.0/24
            #gateway: 172.17.5.254
-           aux_addresses:
-             httpd-php: 172.17.0.2
+           #aux_addresses:
+             #httpd-php: 172.17.0.2
 
