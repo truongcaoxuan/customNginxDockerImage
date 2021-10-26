@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  db:
+     image: mysql:5.7
+     volumes:
+       - db_data: /var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: abc.123
+       MYSQL_DATABASE: wp-db
+       MYSQL_USER: wp-user
+       MYSQL_PASSWORD: abc@123
+     networks:
+       - net-local
+  http-php:
+     depends_on:
+       - db
+     build: .
+     ports:
+       - "8080:80"
+     restart: always
+     networks:
+       - net-local
+       - net-pro
+  phpmyadmin:
+     image: phpmyadmin
+     restart: always
+     port:
+       - "8181:80"
+     environment:
+       PHA_HOST: db
+       MYSQL_ROOT_PASSWORD: abc.123
+  redis:
+     image: redis
+     networks:
+       - net-local
+     port:
+       - "6379"
+
+volumes:
+  db_data: {}
+
+networks:
+  net-local:
+       driver: bridge
+  net-pro:
+       driver: bridge
