@@ -1,4 +1,4 @@
-# **Install Docker Engine**
+## **Install Docker Engine**
 
 #This script was developed on Debian Linux 10"
 #Check version of Linux:"
@@ -21,7 +21,7 @@ rm get-docker.sh
 ```
 docker --version
 ```
-# **Install Docker compose**
+## **Install Docker compose**
 ```
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
@@ -29,16 +29,17 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 #Add the current user to the docker group
 ```
+## **Add docker usergroud**
 sudo groupadd docker
 sudo usermod -aG docker `whoami`
 ```
 >>You must reboot before running the setup script.
-# **Clone git repository**
+## **Clone git repository**
 ```
 git clone https://github.com/truongcaoxuan/devOps.git
 ```
 
-# **Deploy with docker-compose**
+## **Deploy with docker-compose**
 ```
 docker-compose up -d
 ```
