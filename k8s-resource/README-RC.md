@@ -1,7 +1,7 @@
 ## Resource Replication Controllers (RC)
 ### Create RC
 ``
-kubectl apply -f hello-rc.yaml
+kubectl apply -f rc-hello-kube.yml
 ``
 ### Show RC
 ``
@@ -9,5 +9,5 @@ kubectl get rc
 ``
 ### Delete RC
 ``
-kubectl delete rc hello-rc
+kubectl delete rc rc-hello-kube
 ``
