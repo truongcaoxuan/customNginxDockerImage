@@ -1,4 +1,5 @@
 ## POD - LABEL - NAMESPACE
+
 ### Check list namespace
 ``
 kubectl get ns
@@ -11,11 +12,13 @@ kubectl get pod --namespace kube-system
 ``
 kubectl create ns testing
 ``
+
 -------------------------------------------
 ### Run Pod hello kube config YAML
 ``
 kubectl apply -f pod-hello-kube.yaml
 ``
+
 -------------------------------------------
 ### Show list pod with label
 ``
@@ -33,11 +36,13 @@ kubectl get pod -l enviroment=production
 ``
 kubectl get pod -n testing
 ``
+
 -------------------------------------------
 ### Forward port pod
 ``
 kubectl port-forward pod/hello-kube 3000:3000
 ``
+
 -------------------------------------------
 ### Delete pod
 ``
